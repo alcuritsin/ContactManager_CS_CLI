@@ -6,6 +6,7 @@ namespace ContactManager
     {
         static void Main()
         {
+            
         }
     }
 }
