@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ListOfContacts>
 	<Contact>
+		<ContactID>000001</ContactID>
 		<Surname>Курицын</Surname>
 		<Name>Алексей</Name>
 		<Patronymic>Юрьевич</Patronymic>
@@ -9,13 +10,32 @@
 			<MonthOfBirth>1</MonthOfBirth>
 			<DayOfBirth>18</DayOfBirth>
 		</DateOfBirth>
-		<Phones>
+		<PhoneNumbers>
 			<Mobile>+7 (123) 456 78 90</Mobile>
 			<Work>+7 (343) 456 78 90</Work>
-		</Phones>
+		</PhoneNumbers>
 		<Email>
 			<Work>work.mail@gmail.com</Work>
 		</Email>
 		<City>Екатеринбург</City>
+	</Contact>
+	<Contact>
+		<ContactID>000002</ContactID>
+		<Surname>Иванов</Surname>
+		<Name>Иван</Name>
+		<Patronymic>Иванович</Patronymic>
+		<DateOfBirth>
+			<YearOfBirth>1990</YearOfBirth>
+			<MonthOfBirth>2</MonthOfBirth>
+			<DayOfBirth>28</DayOfBirth>
+		</DateOfBirth>
+		<PhoneNumbers>
+			<Mobile>+7 (123) 456 78 90</Mobile>
+			<Work>+7 (343) 456 78 90</Work>
+		</PhoneNumbers>
+		<Email>
+			<Work>work.mail@gmail.com</Work>
+		</Email>
+		<City>Челябинск</City>
 	</Contact>
 </ListOfContacts>
