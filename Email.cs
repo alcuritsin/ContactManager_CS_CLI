@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace ContactManager
 {
-    class Email
+    [Serializable]
+    public class Email
     {
         //  Электронная почта
         public string Work { get; set; }    //  Рабочая электронная почта
+        public Email()
+        {
+        }
+        ~Email()
+        { 
+        }
     }
 }
