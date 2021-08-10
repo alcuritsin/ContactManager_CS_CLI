@@ -1,50 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+
+using System.Xml;
+using System.Xml.Serialization;
+
+using System.Text.Json;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using System.Threading.Tasks;
 
 using static System.Console;
+using Microsoft.Extensions.Options;
 
 namespace ContactManager
 {
     class Program
     {
-        public class Contact
-        {
-            public string ContactID { get; set; }           //  id
-            public string Surname { get; set; }             //  Фамилия
-            public string Name { get; set; }                //  Имя
-            public string Patronymic { get; set; }          //  Отчество
-            //public DateOfBirth DateOfBirth { get; set; }    //  Дата рождения
-            //public PhoneNumbers PhoneNumbers { get; set; }  //  Телефонные номера
-            //public Email Email { get; set; }                //  Клектронный адрес
-            public string City { get; set; }
-            Contact() { }
-            ~Contact() { }
 
-            public Contact(
-                string _contactID,
-                string _surname,
-                string _name,
-                string _patronymic,
-                string _city)
+        static async Task Main()
+        {
+            //List<Contact> contacts = new List<Contact>(3);
+            //Contact contact = new Contact("1","Курицын","Алексей","Юрьевич","Екатеринбург");
+            Contact contact = new Contact
             {
-                ContactID = _contactID;
-                Surname = _surname;
-                Name = _name;
-                Patronymic = _patronymic;
-                City = _city;
+                ContactID = 1,
+                Surname = "Курицын",
+                Name = "Алексей",
+                Patronymic = "Юрьевич",
+                DateOfBirth = new DateOfBirth(1984,1,18),
+                PhoneNumbers = new PhoneNumbers("+7 (123) 456 78 90", "+7 (123) 456 78 90"),
+                Email = new Email("work@mail.com"),
+                City = "Екатеринбург"
+            };
+
+            contact.info();
+
+            //XML - Serializer
+            XmlSerializer xml = new XmlSerializer(typeof(Contact));
+            using (FileStream file_xml = new FileStream("contact.xml", FileMode.OpenOrCreate))
+            {
+                xml.Serialize(file_xml, contact);
             }
 
-            public void info()
+            Contact xml_contact = new Contact();
+            using (FileStream file_xml = new FileStream("contact.xml", FileMode.OpenOrCreate))
             {
-                WriteLine($"     id: {ContactID}");
-                WriteLine($"contact: {Surname} {Name} {Patronymic}");
-                WriteLine($"   city: {City}");
+                xml_contact = (Contact)xml.Deserialize(file_xml);
             }
-        }
-        
-        static void Main()
-        {
-            List<Contact> contacts = new List<Contact>(3);
+            WriteLine("\nxml--");
+            xml_contact.info();
+
+            //JSON
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+            using (FileStream file_json = new FileStream("contact.json", FileMode.OpenOrCreate))
+            {
+                await JsonSerializer.SerializeAsync(file_json, contact, options);
+            }
+
+            Contact json_contact = new Contact();
+            using (FileStream file_json = new FileStream("contact.json", FileMode.OpenOrCreate))
+            {
+                json_contact = await JsonSerializer.DeserializeAsync<Contact>(file_json);
+            }
+            WriteLine("\njson--");
+            json_contact.info();
+
 
         }
     }
