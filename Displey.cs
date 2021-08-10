@@ -65,7 +65,17 @@ namespace ContactManager
                 $"в базе {Program.contacts.Count} контактов");
         }
 
-        //public void 
+        public void ShowEnd()
+        {
+            ShowSign();
+            WriteLine();
+            WriteLine(
+                "+----+----+----+----+----+----*----+----+----+----+----+----+\n" +
+                "+              Работа приложения завершена                  +\n" +
+                "+                    Файл базы сохранён                     +\n" +
+                "+                   Спасибо за внимание                     +\n" +
+                "+----+----+----+----+----+----*----+----+----+----+----+----+");
+        }
         public void ContactShowAll()
         {
 

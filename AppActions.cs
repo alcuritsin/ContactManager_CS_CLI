@@ -34,8 +34,8 @@ namespace ContactManager
             Program.dsp.ShowFrame("Ввод нового контакта:");
 
             Contact contact = new Contact();
-
-            contact.ContactID = (uint)Program.contacts.Count() + 1;
+                       
+            contact.ContactID = UniqID();
 
             contact.Surname = Program.dsp.RequestUser("Фамилия: ");
             contact.Name = Program.dsp.RequestUser("Имя: ");
@@ -55,11 +55,32 @@ namespace ContactManager
 
             Program.contacts.Add(contact);
 
-            Program.dsp.ShowMesage("Новый контакт добавлен.");
+            Program.dsp.RequestUser("Новый контакт добавлен.");
 
             Program.dsp.ShowReseption();
         }
 
+        public uint UniqID()
+        {
+            uint candidateID = (uint)Program.contacts.Count() + 1;
+            bool successful_id;
+            do
+            {
+                successful_id = true;
+                foreach (Contact contact in Program.contacts)
+                {
+                    if (candidateID == contact.ContactID)
+                    {
+                        //  продолжить поиск уникального ID
+                        successful_id = false;
+                        candidateID++;
+                        break; //   Остальные контакты не смотреть.  
+                    }
+                }
+            } while (successful_id != true);
+
+            return candidateID;
+        }
         public void EditContact()
         {
             //  Редактировние контакта
@@ -156,7 +177,83 @@ namespace ContactManager
 
         public void ExportDB()
         {
+            //  Экспорт базы.
+            Program.dsp.ShowFrame("Экспорт всей базы в файл:");
+            string file_name = Program.dsp.RequestUser("Введите имя файла (без расшырения): ");
+            string type = Program.dsp.RequestUser("Выберите тип (1 - *.xml, 2 - *.json): ");
 
+            if (file_name == "db_contacts")
+            {
+                //  Чтобы не перезаписать оригинальный файл базы
+                file_name += "_u";
+            }
+
+            if (type == "2")
+            {
+                jsonOutput(file_name, ref Program.contacts);
+                Program.dsp.RequestUser("Создан файл " + file_name + ".json ");
+            }
+            else
+            {   // Все кроме двойки приведёт к сохранению в xml :)
+                xmlOutput(file_name, ref Program.contacts);
+                Program.dsp.RequestUser("Создан файл " + file_name + ".xml ");
+            }
+
+            Program.dsp.ShowReseption();
+        }
+
+        public void ImportBD()
+        {
+            //  Импортирование базы контактов.
+            Program.dsp.ShowFrame("Импорт базы из файла:");
+            string file_name = Program.dsp.RequestUser("Введите имя файла (без расшырения): ");
+            string type = Program.dsp.RequestUser("Выберите тип (1 - *.xml, 2 - *.json): ");
+            string mode = Program.dsp.RequestUser("Выберите режим (1 - добавить в базу, 2 - заменить базу): ");
+
+            if (mode == "2")
+            {
+                if (type =="2")
+                {
+                    jsonInput(file_name + ".json", ref Program.contacts);
+                    Program.dsp.RequestUser("База контактов заменена " + file_name + ".json ");
+                }
+                else
+                {
+                    xmlInput(file_name + ".xml", ref Program.contacts);
+                    Program.dsp.RequestUser("База контактов заменена " + file_name + ".xml ");
+                }
+            }
+            else
+            {   // Все кроме двойки приведёт к добавлению контактов :)
+                List<Contact> in_contacts = new List<Contact>();
+                if (type == "2")
+                {
+
+                    jsonInput(file_name + ".json", ref in_contacts);
+                }
+                else
+                {
+                    xmlInput(file_name + ".xml", ref in_contacts);
+                }
+
+                foreach (Contact contact in in_contacts)
+                {
+                    contact.ContactID = UniqID();
+                    Program.contacts.Add(contact);
+                }
+
+                if (type == "2")
+                {
+
+                    Program.dsp.RequestUser("База контактов дополнена " + file_name + ".json ");
+                }
+                else
+                {
+                    Program.dsp.RequestUser("База контактов дополнена " + file_name + ".xml ");
+                }
+            }
+
+            Program.dsp.ShowReseption();
         }
 
         //  Xml
