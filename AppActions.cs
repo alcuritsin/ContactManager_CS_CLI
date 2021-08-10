@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
-using System.Xml;
 using System.Xml.Serialization;
 
 using System.Text.Json;
 using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using System.Threading.Tasks;
-
 
 namespace ContactManager
 {
@@ -42,13 +37,16 @@ namespace ContactManager
             contact.Patronymic = Program.dsp.RequestUser("Отчество: ");
 
             //  День рождения
-            contact.DateOfBirth.YearOfBirth = Convert.ToUInt32(Program.dsp.RequestUser("Год рождения (int): "));
+            contact.DateOfBirth = new DateOfBirth();
+            contact.DateOfBirth.YearOfBirth = Convert.ToUInt16(Program.dsp.RequestUser("Год рождения (int): "));
             contact.DateOfBirth.MonthOfBirth = Convert.ToUInt32(Program.dsp.RequestUser("Месяц рождения (int): "));
             contact.DateOfBirth.DayOfBirth = Convert.ToUInt32(Program.dsp.RequestUser("День рождения (int): "));
             //  Телефоны
+            contact.PhoneNumbers = new PhoneNumbers();
             contact.PhoneNumbers.Mobile = Program.dsp.RequestUser("Мобилный номер: ");
             contact.PhoneNumbers.Work = Program.dsp.RequestUser("Рабочий номер: ");
             //  email
+            contact.Email = new Email();
             contact.Email.Work = Program.dsp.RequestUser("email: ");
 
             contact.City = Program.dsp.RequestUser("Город: ");
@@ -119,13 +117,13 @@ namespace ContactManager
 
                     if (successful)
                     {
-                        Program.dsp.ShowMesage("Редактирование прошло успешно.");
+                        Program.dsp.RequestUser("Редактирование прошло успешно.");
                         //  Добавляем отредактированный контакт
                         Program.contacts.Add(e_contact);
                     }
                     else
                     {
-                        Program.dsp.ShowMesage("Что-то пошло не так... :(");
+                        Program.dsp.RequestUser("Что-то пошло не так... :(");
                     }
                     break;  //  Дальше не смотрим.
                 }
@@ -156,11 +154,11 @@ namespace ContactManager
 
                     if (successful)
                     {
-                        Program.dsp.ShowMesage("Удаление прошло успешно.");
+                        Program.dsp.RequestUser("Удаление прошло успешно.");
                     }
                     else
                     {
-                        Program.dsp.ShowMesage("При удалении возникла проблема :(");
+                        Program.dsp.RequestUser("При удалении возникла проблема :(");
                     }
                     break;
                 }
@@ -214,12 +212,12 @@ namespace ContactManager
             {
                 if (type =="2")
                 {
-                    jsonInput(file_name + ".json", ref Program.contacts);
+                    jsonInput(file_name, ref Program.contacts);
                     Program.dsp.RequestUser("База контактов заменена " + file_name + ".json ");
                 }
                 else
                 {
-                    xmlInput(file_name + ".xml", ref Program.contacts);
+                    xmlInput(file_name, ref Program.contacts);
                     Program.dsp.RequestUser("База контактов заменена " + file_name + ".xml ");
                 }
             }
@@ -229,11 +227,11 @@ namespace ContactManager
                 if (type == "2")
                 {
 
-                    jsonInput(file_name + ".json", ref in_contacts);
+                    jsonInput(file_name, ref in_contacts);
                 }
                 else
                 {
-                    xmlInput(file_name + ".xml", ref in_contacts);
+                    xmlInput(file_name, ref in_contacts);
                 }
 
                 foreach (Contact contact in in_contacts)

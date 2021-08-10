@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using static System.Console;
+﻿using static System.Console;
 
 namespace ContactManager
 {
@@ -21,11 +15,6 @@ namespace ContactManager
         {
             ShowSign();
             WriteLine(title + "\n");
-        }
-
-        public void ShowMesage(string msg)
-        {
-            WriteLine(msg);
         }
 
         public string RequestUser(string msg)
