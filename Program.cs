@@ -16,12 +16,72 @@ using Microsoft.Extensions.Options;
 namespace ContactManager
 {
 
-    class Program
+    public class Program
     {
-        static AppActions app = new AppActions();
-        static Displey dsp = new Displey();
+        public static AppActions app = new AppActions();
+        public static Displey dsp = new Displey();
+        public static List<Contact> contacts = new List<Contact>(3);
+
         static void Main()
         {
+            app.LoadDB();
+            dsp.ShowReseption();
+
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey();
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.D0:
+                    case ConsoleKey.NumPad0:
+                        //  вернуться на главный экран
+                        dsp.ShowReseption();
+                        break;
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
+                        //  показать все контакты
+                        dsp.ContactShowAll();
+                        break;
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        //  добавить новый контакт
+                        app.CreateNewContact();
+                        break;
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        //  редактировать контакт по ID
+                        app.EditContact();
+                        break;
+                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
+                        //  удалить контакт по ID
+
+                        break;
+                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
+                        //  экспорт в указанный файл
+
+                        break;
+                    case ConsoleKey.D6:
+                    case ConsoleKey.NumPad6:
+                        //  импортировать из указанного файла
+
+                        break;
+                    case ConsoleKey.D7:
+                    case ConsoleKey.NumPad7:
+                        //  сохраниться
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+            while (key.Key != ConsoleKey.Escape); // по нажатию на Escape завершаем цикл
+
+            app.UploadDB();
+
 
 #if !true
             //  Проверка контакта.
@@ -78,7 +138,6 @@ namespace ContactManager
 #endif
 #if true
 
-            List<Contact> contacts = new List<Contact>(3);
             Contact contact1 = new Contact
             {
                 ContactID = 1,
@@ -107,6 +166,17 @@ namespace ContactManager
             app.xmlOutput("contacts", ref contacts);
             app.jsonOutput("contacts", ref contacts);
 
+            List<Contact> xml_contacts = new List<Contact>(3);
+            List<Contact> json_contacts = new List<Contact>(3);
+
+            app.xmlInput("contacts", ref xml_contacts);
+            app.jsonInput("contacts", ref json_contacts);
+
+            WriteLine("xml_input");
+            dsp.ContactShowAll(ref xml_contacts);
+
+            WriteLine("json_input");
+            dsp.ContactShowAll(ref json_contacts);
 
 #endif
 
