@@ -110,14 +110,52 @@ namespace ContactManager
                 }
             }
 
-            Program.dsp.RequestUser("Указанного ID в базе не обноружено...");
+            if (!successful)
+            {
+                Program.dsp.RequestUser("Указанного ID в базе не обноружено...");
+            }
 
             Program.dsp.ShowReseption();
         }
 
         public void DeleteContact()
         {
+            //  Удаление сонтакта по ID
             Program.dsp.ShowFrame("Удаление контакта по ID:");
+
+            uint id = Convert.ToUInt32(Program.dsp.RequestUser("Введите ID: "));
+            bool successful = false;
+
+            foreach (Contact contact in Program.contacts)
+            {
+                if (contact.ContactID == id)
+                {
+                    //  Удаляем текущий элемент из колекции
+                    successful = Program.contacts.Remove(contact);
+
+                    if (successful)
+                    {
+                        Program.dsp.ShowMesage("Удаление прошло успешно.");
+                    }
+                    else
+                    {
+                        Program.dsp.ShowMesage("При удалении возникла проблема :(");
+                    }
+                    break;
+                }
+
+            }
+
+            if (!successful)
+            {
+                Program.dsp.RequestUser("Указанного ID в базе не обноружено...");
+            }
+
+            Program.dsp.ShowReseption();
+        }
+
+        public void ExportDB()
+        {
 
         }
 

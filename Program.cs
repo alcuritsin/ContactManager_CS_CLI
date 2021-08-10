@@ -57,7 +57,7 @@ namespace ContactManager
                     case ConsoleKey.D4:
                     case ConsoleKey.NumPad4:
                         //  удалить контакт по ID
-
+                        app.DeleteContact();
                         break;
                     case ConsoleKey.D5:
                     case ConsoleKey.NumPad5:
