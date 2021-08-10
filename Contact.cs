@@ -36,7 +36,7 @@ namespace ContactManager
             City = _city;
         }
 
-        public void info()
+        void info()
         {
             WriteLine($"     id: {ContactID}");
             WriteLine($"contact: {Surname} {Name} {Patronymic}");
