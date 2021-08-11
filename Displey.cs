@@ -81,7 +81,7 @@ namespace ContactManager
         {
             WriteLine($"     id: {contact.ContactID}");
             WriteLine($"contact: {contact.Surname} {contact.Name} {contact.Patronymic}");
-            WriteLine($"  birth: {contact.DateOfBirth.YearOfBirth}.{contact.DateOfBirth.MonthOfBirth}.{contact.DateOfBirth.DayOfBirth}\tage: AgeNow");
+            WriteLine($"  birth: {contact.DateOfBirth.YearOfBirth}.{contact.DateOfBirth.MonthOfBirth}.{contact.DateOfBirth.DayOfBirth}\tage: {contact.DateOfBirth.AgeNow()}");
             WriteLine($"M_phone: {contact.PhoneNumbers.Mobile}");
             WriteLine($"W_phone: {contact.PhoneNumbers.Work}");
             WriteLine($"W_email: {contact.Email.Work}");
